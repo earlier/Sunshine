@@ -1,20 +1,9 @@
 package com.example.namhyun.sunshine;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -25,7 +14,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new ForecastFragment())
                     .commit();
         }
     }
@@ -51,45 +40,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            String[] forecastArray = {
-                    "Today-Sunny-88/63",
-                    "Tomorrow-Foggy-70/46",
-                    "Weds-Cloudy-72/63",
-                    "Thurs-Rainy-64/51",
-                    "Fri-Foggy-70/46",
-                    "Sat-Sunny-76/68"
-            };
-
-            ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(forecastArray));
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                    R.layout.list_item_forecast, R.id.list_item_forecast_textview, arrayList);
-            ListView listview = (ListView) rootView.findViewById(R.id.listview_forecast);
-            listview.setAdapter(adapter);
-
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(getActivity(), "Position : " + position, Toast.LENGTH_LONG).show();
-                }
-            });
-
-            return rootView;
-        }
     }
 }
