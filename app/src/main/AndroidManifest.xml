@@ -34,6 +34,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.namhyun.sunshine.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.namhyun.sunshine"
+            android:name=".data.WeatherProvider"
+            android:exported="true"
+            android:permission="com.example.namhyun.sunshine.PROVIDER_KILL"/>
+
     </application>
+
+    <permission android:name="com.example.namhyun.sunshine.PROVIDER_KILL"
+        android:protectionLevel="dangerous"
+        android:label="Kill Provider" />
 
 </manifest>

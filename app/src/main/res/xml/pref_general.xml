@@ -13,4 +13,5 @@
         android:entryValues="@array/pref_units_values"
         android:key="@string/pref_units_key"
         android:title="@string/pref_units_label" />
+
 </PreferenceScreen>
