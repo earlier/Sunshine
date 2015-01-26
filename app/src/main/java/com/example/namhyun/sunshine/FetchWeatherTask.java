@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.Vector;
 
 /**
- * Created by 남현 on 2015-01-13.
+ * Created by Namhyun, Gu on 2015-01-13.
  */
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 

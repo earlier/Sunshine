@@ -11,8 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.CallBack {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private boolean mTwoPane = false;
 
     @Override
     protected void onStart() {
@@ -25,11 +26,20 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
-                    .commit();
+        if (findViewById(R.id.weather_detail_container) != null) {
+            mTwoPane = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailFragment())
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
         }
+
+        ForecastFragment forecastFragment = ((ForecastFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_forecast));
+        forecastFragment.setUseTodayLayout(!mTwoPane);
     }
 
     @Override
@@ -74,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
-        } else if(id == R.id.action_map){
+        } else if (id == R.id.action_map) {
             openPrefferedLocationInMap();
             return true;
         }
@@ -82,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPrefferedLocationInMap(){
+    private void openPrefferedLocationInMap() {
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
         String location = sharedPrefs.getString(getString(R.string.pref_location_key),
@@ -95,9 +105,24 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
 
-        if(intent.resolveActivity(getPackageManager()) != null)
+        if (intent.resolveActivity(getPackageManager()) != null)
             startActivity(intent);
         else
             Log.d(LOG_TAG, "Couldn't call " + location);
+    }
+
+
+    @Override
+    public void onItemSelected(String date) {
+        if (mTwoPane) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, DetailFragment.newInstance(date))
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .putExtra(DetailActivity.DATE_KEY, date);
+            startActivity(intent);
+        }
+
     }
 }
